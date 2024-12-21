@@ -68,4 +68,5 @@ def weather_tomorrow(message):
     except:
         bot.send_message(message.chat.id, "Проверьте название города.")
 
+
 bot.polling(none_stop=True)
