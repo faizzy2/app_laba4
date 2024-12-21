@@ -44,7 +44,7 @@ def weather(message):
     except:
         bot.send_message(message.chat.id, "Проверьте название города.")
 
-@bot.message_handler(commands=['weather_tomorrow'])
+@bot.message_handler(commands=['forecast_weather'])
 def weather_tomorrow(message):
     try:
         response = requests.get(f"http://api.openweathermap.org/data/2.5/forecast?q={currents_city[message.from_user.id]}&lang=ru&cnt=8&units=metric&appid={API_KEY}")
