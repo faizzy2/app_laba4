@@ -44,4 +44,28 @@ def weather(message):
     except:
         bot.send_message(message.chat.id, "Проверьте название города.")
 
+@bot.message_handler(commands=['weather_tomorrow'])
+def weather_tomorrow(message):
+    try:
+        response = requests.get(f"http://api.openweathermap.org/data/2.5/forecast?q={currents_city[message.from_user.id]}&lang=ru&cnt=8&units=metric&appid={API_KEY}")
+        response.raise_for_status()
+        data = response.json()
+        city = data['city']['name']
+        for item in data['list']:
+            date_time = item['dt_txt']
+            temperature = item['main']['temp']
+            feels_like_temp = item['main']['feels_like']
+            pressure = item['main']['pressure']
+            humidity = item['main']['humidity']
+            wind = item['wind']['speed']
+
+            bot.send_message(message.chat.id,
+                            f"Погода в городе {city} на момент {date_time}:\n"
+                            f"Температура: {temperature}°C ощущается как {feels_like_temp}°C\n"
+                            f"Влажность: {humidity}%\n"
+                            f"Давление: {ceil(pressure / 1.333)} мм.рт.ст\n"
+                            f"Скорость ветра: {wind} м/с\n")
+    except:
+        bot.send_message(message.chat.id, "Проверьте название города.")
+
 bot.polling(none_stop=True)
